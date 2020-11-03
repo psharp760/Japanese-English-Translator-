@@ -134,10 +134,9 @@ bool period (string s)
 // TABLES Done by: Peter Sharp
 
 // ** Update the tokentype to be WORD1, WORD2, PERIOD, ERROR, EOFM, etc.
-enum tokentype {WORD1, WORD2, PERIOD, VERB, VERBNEG, VERBPAST, VERBPASTNEG, IS, WAS, OBJECT, SUBJECT, DESTINATION, PRONOUN, CONNECTOR, EOFM, ERROR};
-
+enum tokentype { WORD1, WORD2, PERIOD, VERB, VERBNEG, VERBPAST, VERBPASTNEG, IS, WAS, OBJECT, SUBJECT, DESTINATION, PRONOUN, CONNECTOR, EOFM, ERROR };
 // ** For the display names of tokens - must be in the same order as the tokentype.
-string tokenName[30] = {"WORD1", "WORD2", "PERIOD", "VERB", "VERBNEG", "VERBPAST", "VERBPASTNEG", "IS", "WAS" "OBJECT", "SUBJECT", "DESTINATION", "PRONOUN", "CONNECTOR", "EOFM", "ERROR"}; 
+string tokenName[30] = {"WORD1", "WORD2", "PERIOD", "VERB", "VERBNEG", "VERBPAST", "VERBPASTNEG", "IS", "WAS", "OBJECT", "SUBJECT", "DESTINATION", "PRONOUN", "CONNECTOR", "EOFM", "ERROR"};
 
 // ** Need the reservedwords table to be set up here. 
 // ** Do not require any file input for this. Hard code the table.
@@ -146,6 +145,7 @@ string reservedwords[20][2] = {
     "masu", "VERB",
     "masen", "VERBNEG",
     "mashita", "VERBPAST",
+    "masendeshita", "VERBPASTNEG",
     "desu", "IS",
     "deshita", "WAS",
     "o", "OBJECT",
@@ -237,8 +237,6 @@ int scanner(tokentype& tt, string& w)
   4. Return the token type & string  (pass by reference)
   */
 }//the end of scanner
-
-
 
 // The temporary test driver to just call the scanner repeatedly  
 // This will go away after this assignment

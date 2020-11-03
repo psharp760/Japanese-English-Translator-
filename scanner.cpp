@@ -4,42 +4,118 @@
 using namespace std;
 
 //=====================================================
-// File scanner.cpp written by: Group Number: 2
+// File scanner.cpp written by: Group Number: 8
 //=====================================================
 
 // --------- Two DFAs ---------------------------------
 
 // WORD DFA 
-// Done by: **
-// RE:   **
+// Done by: Howard Tep
+// RE:   (([vowel] n | dwzyj | bmknhpr | t | c | s) 
 bool word (string s)
 {
 
   int state = 0;
   int charpos = 0;
 
-  /* replace the following todo the word dfa(vowel | vowel n | consonant vowel | etc......  **
+  // replace the following todo the word dfa(vowel | vowel n | consonant vowel | etc......  **
  
-     where vowel = a,e,i,o,e,I, E    refer to Project-partA_w8A10A.doc for RE   
+     //where vowel = a,e,i,o,e,I, E    refer to Project-partA_w8A10A.doc for RE   
     while (s[charpos] != '\0') 
     {
-      if (state == 0 && s[charpos] == 'a')
-      state = 1;
-      else
-      if (state == 1 && s[charpos] == 'b')
-      state = 2;
-      else
-      if (state == 2 && s[charpos] == 'b')
-      state = 2;
-      else
-	  return(false);
+      if (state == 0) {
+        char ch = s[charpos];//storing character
+        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'I' || ch == 'E')
+          state = 7;
+        else if (ch == 'd' || ch == 'w' || ch == 'z' || ch == 'y' || ch == 'j')
+          state = 6;
+        else if (ch == 'b' || ch == 'm' || ch == 'k' || ch == 'n' || ch == 'h' || ch == 'p' || ch == 'r' || ch == 'g')
+          state = 5;
+        else if (ch == 't') state == 4;
+        else if (ch == 'c') state == 3;
+        else if (ch == 's') state == 2;
+      }
+
+      else if (state == 1 && s[charpos] == 'n') state == 0;
+      
+      else if (state == 6) {
+        char ch = s[charpos];//storing character
+        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'I' || ch == 'E')
+          state = 7;
+      }
+
+      else if (state == 5) {
+        char ch = s[charpos];//storing character
+        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'I' || ch == 'E')
+          state = 7;
+        else if (ch == 'y')
+          state = 6;
+      }
+
+      else if (state == 4) {
+        char ch = s[charpos];//storing character
+        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'I' || ch == 'E')
+          state = 7;
+        else if (ch == 's')
+          state = 6;
+      }
+
+       else if (state == 2) {
+        char ch = s[charpos];//storing character
+        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'I' || ch == 'E')
+          state = 7;
+        else if (ch == 'h')
+          state = 6;
+      }
+
+      else if (state == 3 && s[charpos] == 'h') state == 6;
+
+      else if (state == 7) {
+        char ch = s[charpos];//storing character
+        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'I' || ch == 'E')
+          state = 6;
+        
+        else if (ch == 'n') state == 8;
+        else if (ch == 'y') state == 6;
+        else if (ch == 's') state == 2;
+        else if (ch == 'h') state == 5;
+        else if (ch == 'c') state == 3;
+        else if (ch == 't') state == 4;
+
+        else if (ch == 'b' || ch == 'm' || ch == 'k' || ch == 'n' || ch == 'h' || ch == 'p' || ch == 'r' || ch == 'g')
+          state == 8;
+        
+        else if (ch == 'd' || ch == 'w' || ch == 'z' || ch == 'y' || ch == 'j')
+          state = 6;
+      }
+
+      else if (state == 8) {
+        char ch = s[charpos];//storing character
+        if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'I' || ch == 'E')
+          state == 7;
+        
+        else if (ch == 'n') state == 5;
+        else if (ch == 'y') state == 6;
+        else if (ch == 's') state == 2;
+        else if (ch == 'h') state == 5;
+        else if (ch == 'c') state == 3;
+        else if (ch == 't') state == 4;
+
+        else if (ch == 'b' || ch == 'm' || ch == 'k' || ch == 'n' || ch == 'h' || ch == 'p' || ch == 'r' || ch == 'g')
+          state == 5;
+        
+        else if (ch == 'd' || ch == 'w' || ch == 'z' || ch == 'y' || ch == 'j')
+          state = 6;
+      }
+
+      else return(false);
       charpos++;
     }//end of while
 
-  // where did I end up????
-  if (state == 2) return(true);  // end in a final state
-   else return(false);
-  */
+    // where did I end up????
+    if (state == 0 || state == 7 || state == 8) return(true);  // end in a final state
+    else return(false);
+
 }
 
 // PERIOD DFA 

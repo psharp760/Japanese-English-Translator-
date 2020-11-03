@@ -3,10 +3,8 @@
 #include<string>
 using namespace std;
 
-/* Look for all **'s and complete them */
-
 //=====================================================
-// File scanner.cpp written by: Group Number: ** 
+// File scanner.cpp written by: Group Number: 2
 //=====================================================
 
 // --------- Two DFAs ---------------------------------
@@ -53,18 +51,37 @@ bool period (string s)
 
 // ------ Three  Tables -------------------------------------
 
-// TABLES Done by: **
+// TABLES Done by: Peter Sharp
 
 // ** Update the tokentype to be WORD1, WORD2, PERIOD, ERROR, EOFM, etc.
-enum tokentype {ERROR, };
+enum tokentype {WORD1, WORD2, PERIOD, VERB, VERBNEG, VERBPAST, VERBPASTNEG, IS, WAS, OBJECT, SUBJECT, DESTINATION, PRONOUN, CONNECTOR, EOFM, ERROR};
 
 // ** For the display names of tokens - must be in the same order as the tokentype.
-string tokenName[30] = { }; 
+string tokenName[30] = {"WORD1", "WORD2", "PERIOD", "VERB", "VERBNEG", "VERBPAST", "VERBPASTNEG", "IS", "WAS" "OBJECT", "SUBJECT", "DESTINATION", "PRONOUN", "CONNECTOR", "EOFM", "ERROR"}; 
 
 // ** Need the reservedwords table to be set up here. 
 // ** Do not require any file input for this. Hard code the table.
 // ** a.out should work without any additional files.
-
+string reservedwords[20][2] = {
+    "masu", "VERB",
+    "masen", "VERBNEG",
+    "mashita", "VERBPAST",
+    "desu", "IS",
+    "deshita", "WAS",
+    "o", "OBJECT",
+    "wa", "SUBJECT",
+    "ni", "DESTINATION",
+    "watashi", "PRONOUN",
+    "anata", "PRONOUN",
+    "kare", "PRONOUN",
+    "kanojo", "PRONOUN",
+    "sore", "PRONOUN",
+    "mata", "CONNECTOR",
+    "soshite", "CONNECTOR",
+    "shikashi", "CONNECTOR",
+    "dakara", "CONNECTOR",
+    "eofm", "EOFM"
+};
 
 // ------------ Scanner and Driver ----------------------- 
 

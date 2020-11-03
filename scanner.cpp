@@ -126,6 +126,7 @@ bool period (string s)
         return true;
     } else {
         return false;
+    }
 }
 
 // ------ Three  Tables -------------------------------------
@@ -168,27 +169,72 @@ ifstream fin;  // global stream for reading from the input file
 
 // Scanner processes only one word each time it is called
 // Gives back the token type and the word itself
-// ** Done by: 
+// ** Done by: Peter Sharp & William Cerros 
 int scanner(tokentype& tt, string& w)
 {
+    fin >> w;
+
+    if (word(w)) {
+        bool reserved = false;
+        for (int i = 0; i < 20; i++) {
+            if (w == reservedwords[i][0]) {
+                if (reservedwords[i][1] == "VERB") {
+		    tt = VERB;
+		} else if (reservedwords[i][1] == "VERBNEG") {
+  		    tt = VERBNEG;
+	        } else if (reservedwords[i][1] == "VERBPASTNEG") {
+		    tt = VERBPASTNEG;
+                } else if (reservedwords[i][1] == "IS") {
+ 		    tt = IS;
+		} else if (reservedwords[i][1] == "WAS") {
+		    tt = WAS;
+		} else if (reservedwords[i][1] == "OBJECT") {
+		    tt = OBJECT;
+		} else if (reservedwords[i][1] == "SUBJECT") {
+		    tt = SUBJECT;
+		} else if (reservedwords[i][1] == "DESTINATION") {
+		    tt = DESTINATION;
+		} else if (reservedwords[i][1] == "PRONOUN") {
+		    tt = PRONOUN;
+		} else if (reservedwords[i][1] == "CONNECTOR") {
+		    tt = CONNECTOR;
+		} else if (reservedwords[i][1] == "EOFM") {
+		    tt = EOFM;
+		}
+		reserved = true;
+		break;
+            }
+        }
+	if (!reserved) {
+	    if (w[w.length() - 1] == 'I' || w[w.length() - 1] == 'E') {
+	        tt = WORD2;
+	    } else {
+		tt = WORD1;
+	    }
+	}
+    }
+    else if (period(w)) {
+        tt = PERIOD;
+    } else if (w == "eofm") {
+        tt = EOFM;
+    } else {
+        cout << "LEXICAL ERROR: " << w << " is not a valid token.\n";
+    }
+    return 0;
 
   // ** Grab the next word from the file via fin
   // 1. If it is eofm, return right now.   
-
   /*  **
   2. Call the token functions (word and period) 
      one after another (if-then-else).
      Generate a lexical error message if both DFAs failed.
      Let the tokentype be ERROR in that case.
-
   3. If it was a word,
      check against the reservedwords list.
      If not reserved, tokentype is WORD1 or WORD2
      decided based on the last character.
-
   4. Return the token type & string  (pass by reference)
   */
-
 }//the end of scanner
 
 

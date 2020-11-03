@@ -43,10 +43,13 @@ bool word (string s)
 }
 
 // PERIOD DFA 
-// Done by: **
+// Done by: Peter Sharp
 bool period (string s)
-{  // complete this **
-
+{  
+    if (s[0] == '.') {
+        return true;
+    } else {
+        return false;
 }
 
 // ------ Three  Tables -------------------------------------

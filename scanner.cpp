@@ -31,12 +31,12 @@ bool word (string s)
           state = 6;
         else if (ch == 'b' || ch == 'm' || ch == 'k' || ch == 'n' || ch == 'h' || ch == 'p' || ch == 'r' || ch == 'g')
           state = 5;
-        else if (ch == 't') state == 4;
-        else if (ch == 'c') state == 3;
-        else if (ch == 's') state == 2;
+        else if (ch == 't') state = 4;
+        else if (ch == 'c') state = 3;
+        else if (ch == 's') state = 2;
       }
 
-      else if (state == 1 && s[charpos] == 'n') state == 0;
+      else if (state == 1 && s[charpos] == 'n') state = 0;
       
       else if (state == 6) {
         char ch = s[charpos];//storing character
@@ -68,22 +68,22 @@ bool word (string s)
           state = 6;
       }
 
-      else if (state == 3 && s[charpos] == 'h') state == 6;
+      else if (state == 3 && s[charpos] == 'h') state = 6;
 
       else if (state == 7) {
         char ch = s[charpos];//storing character
         if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'I' || ch == 'E')
           state = 6;
         
-        else if (ch == 'n') state == 8;
-        else if (ch == 'y') state == 6;
-        else if (ch == 's') state == 2;
-        else if (ch == 'h') state == 5;
-        else if (ch == 'c') state == 3;
-        else if (ch == 't') state == 4;
+        else if (ch == 'n') state = 8;
+        else if (ch == 'y') state = 6;
+        else if (ch == 's') state = 2;
+        else if (ch == 'h') state = 5;
+        else if (ch == 'c') state = 3;
+        else if (ch == 't') state = 4;
 
         else if (ch == 'b' || ch == 'm' || ch == 'k' || ch == 'n' || ch == 'h' || ch == 'p' || ch == 'r' || ch == 'g')
-          state == 8;
+          state = 8;
         
         else if (ch == 'd' || ch == 'w' || ch == 'z' || ch == 'y' || ch == 'j')
           state = 6;
@@ -92,17 +92,17 @@ bool word (string s)
       else if (state == 8) {
         char ch = s[charpos];//storing character
         if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'I' || ch == 'E')
-          state == 7;
+          state = 7;
         
-        else if (ch == 'n') state == 5;
-        else if (ch == 'y') state == 6;
-        else if (ch == 's') state == 2;
-        else if (ch == 'h') state == 5;
-        else if (ch == 'c') state == 3;
-        else if (ch == 't') state == 4;
+        else if (ch == 'n') state = 5;
+        else if (ch == 'y') state = 6;
+        else if (ch == 's') state = 2;
+        else if (ch == 'h') state = 5;
+        else if (ch == 'c') state = 3;
+        else if (ch == 't') state = 4;
 
         else if (ch == 'b' || ch == 'm' || ch == 'k' || ch == 'n' || ch == 'h' || ch == 'p' || ch == 'r' || ch == 'g')
-          state == 5;
+          state = 5;
         
         else if (ch == 'd' || ch == 'w' || ch == 'z' || ch == 'y' || ch == 'j')
           state = 6;

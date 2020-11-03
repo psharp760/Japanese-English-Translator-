@@ -219,6 +219,7 @@ int scanner(tokentype& tt, string& w)
         tt = EOFM;
     } else {
         cout << "LEXICAL ERROR: " << w << " is not a valid token.\n";
+        tt = ERROR;
     }
     return 0;
 

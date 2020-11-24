@@ -50,6 +50,7 @@ void syntaxerror2(parser_function function) {
 // Purpose: Checks what token comes next from scanner.
 // Done by: Peter Sharp
 tokentype next_token() {
+
     if (!token_available) {
         scanner(saved_token, saved_lexeme);
         token_available = true;
@@ -88,22 +89,189 @@ bool match(tokentype expected) {
 // ** Be sure to put the corresponding grammar rule above each function
 // ** Be sure to put the name of the programmer above each function
 
-// Grammar: **
-// Done by: **
+// Grammar: <tense> ::= VERBPAST | VERBPASTNEG | VERB | VERBNEG
+// Done by: Peter Sharp
+void tense() {
 
-// Grammar: **
-// Done by: **
+    cout << "Processing <tense>\n";
 
+    switch (next_token()) {
+        case VERBPAST:
+            match(VERBPAST);
+            break;
+        case VERBPASTNEG:
+            match(VERBPASTNEG);
+            break;
+        case VERB:
+            match(VERB);
+            break;
+        case VERBNEG:
+            match(VERBNEG);
+            break;
+        default:
+            syntaxerror2(TENSE);
+    }
+}
 
+// Grammar: <be> ::= IS | WAS
+// Done by: Peter Sharp
+void be() {
 
+    cout << "Processing <be>\n";
 
+    switch (next_token()) {
+        case IS:
+            match(IS);
+            break;
+        case WAS:
+            match(WAS);
+            break;
+        default:
+            syntaxerror2(BE);
+    }
+}
+
+// Grammar: <verb> ::= WORD2
+// Done by: Peter Sharp
+void verb() {
+
+    cout << "Processing <verb>\n";
+    match(WORD2);
+}
+
+// Grammar: <noun> ::= WORD1 | PRONOUN 
+// Done by: Peter Sharp
+void noun() {
+
+    cout << "Processing <noun>\n";
+
+    switch (next_token()) {
+        case WORD1:
+            match(WORD1);
+            break;
+        case PRONOUN:
+            match(PRONOUN);
+            break;
+        default:
+            syntaxerror2(NOUN);
+    }
+}
+
+// Grammar: <afterObject> ::= <noun> DESTINATION <verb> <tense> PERIOD | <verb> <tense> PERIOD 
+// Done by: Peter Sharp
+void after_object() {
+
+    cout << "Processing <afterObject>\n";
+
+    switch (next_token()) {
+        case WORD1: case PRONOUN:
+            noun();
+            match(DESTINATION);
+            verb();
+            tense();
+            match(PERIOD);
+            break;
+        case WORD2:
+            verb();
+            tense();
+            match(PERIOD);
+            break;
+        default:
+            syntaxerror2(AFTER_OBJECT);
+    }
+}
+
+// Grammar: <afterNoun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <afterObject>
+// Done by: Peter Sharp
+void after_noun() {
+
+    cout << "Processing <afterNoun>\n";
+
+    switch (next_token()) {
+        case IS: case WAS:
+            be();
+            match(PERIOD);
+            break;
+        case DESTINATION:
+            match(DESTINATION);
+            verb();
+            tense();
+            match(PERIOD);
+            break;
+        case OBJECT:
+            match(OBJECT);
+            after_object();
+            break;
+        default:
+            syntaxerror2(AFTER_NOUN);
+    }
+}
+
+// Grammar: <afterSubject> ::= <verb> <tense> PERIOD | <noun> <afterNoun> 
+// Done by: Peter Sharp
+void after_subject() {
+
+    cout << "Processing <afterSubject>\n";
+
+    switch (next_token()) {
+        case WORD2:
+            verb();
+            tense();
+            match(PERIOD);
+            break;
+        case WORD1: case PRONOUN:
+            noun();
+            after_noun();
+            break;
+        default:
+            syntaxerror2(AFTER_SUBJECT);
+    }
+
+}
+
+// Grammar: <s> ::= [CONNECTOR] <noun> SUBJECT <afterSubject>
+// Done by: Peter Sharp
+void s() {
+
+    cout << "Processing <s>\n";
+
+    switch (next_token()) {
+        case CONNECTOR:
+            match(CONNECTOR);
+            noun();
+            match(SUBJECT);
+            after_subject();
+            break;
+        default:
+            noun();
+            match(SUBJECT);
+            after_subject();
+            break;
+    }
+}
+
+// Grammar: <story> ::= <s> { <s> }
+// Done by: Peter Sharp
+void story() {
+
+    cout << "Processing <story>\n";
+
+    s();
+    while (true) {
+        if (next_token() == EOFM) {
+            cout << "\nSuccessfully parsed <story>.\n";
+            break;
+        }
+        s();
+    }
+}
 
 //----------- Driver ---------------------------
 
 string filename;
 
 // The new test driver to start the parser
-// Done by:  **
+// Done by:  Peter Sharp
 int main() {
 
     cout << "Enter the input file name: ";
@@ -117,7 +285,7 @@ int main() {
         errorfile.open("errors.txt", ios::app);
     }
 
-    // story();
+    story();
     errorfile.close();
     fin.close();
 

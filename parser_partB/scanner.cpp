@@ -191,6 +191,7 @@ ifstream fin;  // global stream for reading from the input file
 int scanner(tokentype& tt, string& w)
 {
     fin >> w;
+    cout << "Scanner called using word: " << w << endl;
 
     //checking to see if we have a period first
     //checking to see if word is period first, since it is th easiest thing to check for

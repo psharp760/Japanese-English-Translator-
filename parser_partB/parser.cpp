@@ -2,17 +2,7 @@
 #include<fstream>
 #include<string>
 #include "scanner.cpp"
-
 using namespace std;
-
-/* INSTRUCTION:  Complete all ** parts.
-   You may use any method to connect this file to scanner.cpp
-   that you had written.  
-  e.g. You can copy scanner.cpp here by:
-          cp ../ScannerFiles/scanner.cpp .  
-       and then append the two files into one: 
-          cat scanner.cpp parser.cpp > myparser.cpp
-*/
 
 //=================================================
 // File parser.cpp written by Group Number: 8
@@ -23,7 +13,7 @@ using namespace std;
 string saved_lexeme;
 tokentype saved_token;
 bool token_available = false;
-string choice;
+string user_choice;
 ofstream errorfile;
 
 enum parser_function {STORY, S, AFTER_SUBJECT, AFTER_NOUN, AFTER_OBJECT, VERB1, TENSE, NOUN, BE};
@@ -33,12 +23,12 @@ string parserName[30] = {"story", "s", "after_subject", "after_noun", "after_obj
 //    to display syntax error messages as specified by me.  
 
 // Type of error: Match fails.
-// Done by: Peter Sharp 
+// Done by: William Cerros 
 void syntaxerror1(tokentype expected){
     cout << "\nSYNTAX ERROR: expected " << tokenName[expected] << " but found " << saved_lexeme << endl;
 }
-// Type of error: switch default
-// Done by: Peter Sharp 
+// Type of error: Switch default
+// Done by: William Cerros 
 void syntaxerror2(parser_function function) {
     cout << "\nSYNTAX ERROR: unexpected " << saved_lexeme << " found in " << parserName[function] << endl;
     exit(1);
@@ -48,7 +38,7 @@ void syntaxerror2(parser_function function) {
 // saved_token and saved_lexeme
 
 // Purpose: Checks what token comes next from scanner.
-// Done by: Peter Sharp
+// Done by: Howard Tep
 tokentype next_token() {
 
     if (!token_available) {
@@ -59,7 +49,7 @@ tokentype next_token() {
 }
 
 // Purpose: Checks if expected token is different from next_token()
-// Done by: Peter Sharp
+// Done by: Howard Tep
 bool match(tokentype expected) {
 
     if (next_token() != expected) {
@@ -68,11 +58,11 @@ bool match(tokentype expected) {
             errorfile << "\nSYNTAX ERROR: expected " << tokenName[expected] << " but found " << saved_lexeme << endl;
         }
         cout << "Skip or replace the token? (s or r)";
-        cin >> choice;
-        if (choice == "s") {
+        cin >> user_choice;
+        if (user_choice == "s") {
             token_available = false;
             match(expected);
-        } else if (choice == "r") {
+        } else if (user_choice == "r") {
             token_available = false;
             cout << "Matched " << tokenName[expected] << endl;
         }
@@ -132,7 +122,7 @@ void be() {
 }
 
 // Grammar: <verb> ::= WORD2
-// Done by: Peter Sharp
+// Done by: Howard Tep
 void verb() {
 
     cout << "Processing <verb>\n";
@@ -140,7 +130,7 @@ void verb() {
 }
 
 // Grammar: <noun> ::= WORD1 | PRONOUN 
-// Done by: Peter Sharp
+// Done by: Howard Tep
 void noun() {
 
     cout << "Processing <noun>\n";
@@ -158,7 +148,7 @@ void noun() {
 }
 
 // Grammar: <afterObject> ::= <noun> DESTINATION <verb> <tense> PERIOD | <verb> <tense> PERIOD 
-// Done by: Peter Sharp
+// Done by: William Cerros
 void after_object() {
 
     cout << "Processing <afterObject>\n";
@@ -182,7 +172,7 @@ void after_object() {
 }
 
 // Grammar: <afterNoun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <afterObject>
-// Done by: Peter Sharp
+// Done by: William Cerros
 void after_noun() {
 
     cout << "Processing <afterNoun>\n";
@@ -208,7 +198,7 @@ void after_noun() {
 }
 
 // Grammar: <afterSubject> ::= <verb> <tense> PERIOD | <noun> <afterNoun> 
-// Done by: Peter Sharp
+// Done by: Howard Tep
 void after_subject() {
 
     cout << "Processing <afterSubject>\n";
@@ -251,7 +241,7 @@ void s() {
 }
 
 // Grammar: <story> ::= <s> { <s> }
-// Done by: Peter Sharp
+// Done by: William Cerros
 void story() {
 
     cout << "Processing <story>\n";
@@ -276,13 +266,14 @@ int main() {
 
     cout << "Enter the input file name: ";
     cin >> filename;
+    
     fin.open(filename.c_str());
 
     cout << "Do you want to trace error messages? (y or n)";
-    cin >> choice;
+    cin >> user_choice;
 
-    if (choice == "y") {
-        errorfile.open("errors.txt", ios::app);
+    if (user_choice == "y") {
+        errorfile.open("errors.txt");
     }
 
     story();

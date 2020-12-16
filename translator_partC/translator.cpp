@@ -1,6 +1,9 @@
 #include<iostream>
 #include<fstream>
 #include<string>
+#include <iterator> 
+#include <map>
+#include <sstream>
 using namespace std;
 
 /* INSTRUCTION:  copy your parser.cpp here
@@ -18,7 +21,58 @@ using namespace std;
 // ** Declare Lexicon (i.e. dictionary) that will hold the content of lexicon.txt
 // Make sure it is easy and fast to look up the translation.
 // Do not change the format or content of lexicon.txt 
-//  Done by: ** 
+//  Done by: William Cerros
+
+// Map will serve as our look up table
+map<string, string> lexicon_dictionary;
+
+void build_dictionary() {
+    // input streamt to read from text file
+    std::ifstream input_stream("lexicon.txt", std::ifstream::in);
+    string word;
+    
+    int i;
+    int j = 0;
+    // for loop will iterate through each line in lexicon.txt
+    for (string line; getline(input_stream, line); )
+    {
+         
+        // istringstream object will help us parse the input
+        istringstream ss(line);
+
+        // This will be our dictionary pair
+        string key;
+        string value;
+
+        // Counter to let us know if we are reading the fist or second word
+        i = 0;
+
+        // while a word exists in the line we are currently reading from text file
+        while (ss >> word)
+        {
+            if (i == 0) {
+                key = word;
+            }
+
+            if (i == 1) {
+                value = word;
+
+                // Once we have read in the value we can insert to our map
+                lexicon_dictionary.insert(pair<string, string>(key, value));
+            }
+
+            i++;
+        }
+    }
+
+
+    for (map<string, string>::const_iterator it = lexicon_dictionary.begin();
+        it != lexicon_dictionary.end(); ++it)
+    {
+        std::cout << "Key: "<< it->first << " Value: " << it->second << " ""\n";
+    }
+
+}
 
 
 // ** Additions to parser.cpp here:

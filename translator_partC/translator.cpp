@@ -4,6 +4,8 @@
 #include <iterator> 
 #include <map>
 #include <sstream>
+#include "scanner.cpp"
+
 
 
 using namespace std;

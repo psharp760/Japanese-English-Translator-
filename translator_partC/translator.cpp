@@ -4,6 +4,8 @@
 #include <iterator> 
 #include <map>
 #include <sstream>
+
+
 using namespace std;
 
 /* INSTRUCTION:  copy your parser.cpp here
@@ -74,7 +76,6 @@ void build_dictionary() {
 
 }
 
-
 // ** Additions to parser.cpp here:
 //    getEword() - using the current saved_lexeme, look up the English word
 //                 in Lexicon if it is there -- save the result   
@@ -103,12 +104,13 @@ int main()
 {
   //** opens the lexicon.txt file and reads it into Lexicon
   //** closes lexicon.txt 
+  build_dictionary();
 
   //** opens the output file translated.txt
 
   cout << "Enter the input file name: ";
-  cin >> filename;
-  fin.open(filename.c_str());
+  //cin >> filename;
+  //fin.open(filename.c_str());
 
   //** calls the <story> to start parsing
 
@@ -119,4 +121,3 @@ int main()
 //** require no other input files!
 //** syntax error EC requires producing errors.txt of error messages
 //** tracing On/Off EC requires sending a flag to trace message output functions
-

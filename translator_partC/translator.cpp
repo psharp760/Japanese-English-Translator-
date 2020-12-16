@@ -6,15 +6,33 @@
 #include <sstream>
 #include "scanner.cpp"
 
-
-
 using namespace std;
+
+//=================================================
+// File translator.cpp written by Group Number: 8
+//=================================================
 
 /* INSTRUCTION:  copy your parser.cpp here
       cp ../ParserFiles/parser.cpp .
    Then, insert or append its contents into this file and edit.
    Complete all ** parts.
 */
+
+//=================================================
+// File parser.cpp written by Group Number: 8
+//=================================================
+
+// ----- Changes to the parser.cpp content ---------------------
+
+// ** Comment update: Be sure to put the corresponding grammar 
+//    rule with semantic routine calls
+//    above each non-terminal function 
+
+// ** Each non-terminal function should be calling
+//    getEword and/or gen now.
+
+// ----- Four Utility Functions and Globals -----------------------------------
+
 string saved_lexeme;
 tokentype saved_token;
 bool token_available = false;
@@ -38,6 +56,19 @@ void syntaxerror2(parser_function function) {
     cout << "\nSYNTAX ERROR: unexpected " << saved_lexeme << " found in " << parserName[function] << endl;
     exit(1);
 }
+
+// ** Additions to parser.cpp here:
+//    getEword() - using the current saved_lexeme, look up the English word
+//                 in Lexicon if it is there -- save the result   
+//                 in saved_E_word
+//  Done by: ** 
+
+
+//    gen(line_type) - using the line type,
+//                     sends a line of an IR to translated.txt
+//                     (saved_E_word or saved_token is used)
+//  Done by: ** 
+
 
 // ** Need the updated match and next_token with 2 global vars
 // saved_token and saved_lexeme
@@ -262,11 +293,6 @@ void story() {
 }
 
 
-
-//=================================================
-// File translator.cpp written by Group Number: **
-//=================================================
-
 // ----- Additions to the parser.cpp ---------------------
 
 // ** Declare Lexicon (i.e. dictionary) that will hold the content of lexicon.txt
@@ -325,24 +351,7 @@ void build_dictionary() {
 
 }
 
-// ** Additions to parser.cpp here:
-//    getEword() - using the current saved_lexeme, look up the English word
-//                 in Lexicon if it is there -- save the result   
-//                 in saved_E_word
-//  Done by: ** 
-//    gen(line_type) - using the line type,
-//                     sends a line of an IR to translated.txt
-//                     (saved_E_word or saved_token is used)
-//  Done by: ** 
 
-// ----- Changes to the parser.cpp content ---------------------
-
-// ** Comment update: Be sure to put the corresponding grammar 
-//    rule with semantic routine calls
-//    above each non-terminal function 
-
-// ** Each non-terminal function should be calling
-//    getEword and/or gen now.
 
 
 // ---------------- Driver ---------------------------

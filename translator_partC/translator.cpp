@@ -34,10 +34,14 @@ using namespace std;
 // ----- Four Utility Functions and Globals -----------------------------------
 
 string saved_lexeme;
+string saved_E_word;
 tokentype saved_token;
 bool token_available = false;
 string user_choice;
 ofstream errorfile;
+ofstream translatedfile;
+string JapaneseWord[47];
+string EnglishWord[47];
 
 enum parser_function {STORY, S, AFTER_SUBJECT, AFTER_NOUN, AFTER_OBJECT, VERB1, TENSE, NOUN, BE};
 string parserName[30] = {"story", "s", "after_subject", "after_noun", "after_object", "verb1", "tense", "noun", "be"};
@@ -61,14 +65,31 @@ void syntaxerror2(parser_function function) {
 //    getEword() - using the current saved_lexeme, look up the English word
 //                 in Lexicon if it is there -- save the result   
 //                 in saved_E_word
-//  Done by: ** 
+//  Done by: Peter Sharp 
+void getEword() {
 
+    for (int i = 0; i < 47; i++) {
+        if (saved_lexeme == JapaneseWord[i]) {
+            saved_E_word = EnglishWord[i];
+            return;
+        }
+    }
+    saved_E_word = saved_lexeme;
+    return;
+}
 
 //    gen(line_type) - using the line type,
 //                     sends a line of an IR to translated.txt
 //                     (saved_E_word or saved_token is used)
-//  Done by: ** 
+//  Done by: Howard Tep
+void gen(string token) {
 
+    if (token == "TENSE") {
+        translatedfile << "TENSE:" << tokenName[saved_token] << endl;
+    } else {
+        translatedfile << token << ": " << saved_E_word << endl;
+    }
+}
 
 // ** Need the updated match and next_token with 2 global vars
 // saved_token and saved_lexeme
@@ -183,7 +204,9 @@ void noun() {
     }
 }
 
-// Grammar: <afterObject> ::= <noun> DESTINATION <verb> <tense> PERIOD | <verb> <tense> PERIOD 
+// Grammar: <afterObject> ::= <noun> #getEword# DESTINATION #gen("TO")# <verb> #getEword#
+//                            #gen("ACTION")# <tense> #gen("TENSE")# PERIOD | <verb> 
+//                            #getEword# #gen("ACTION")# <tense> #gen("TENSE")# PERIOD 
 // Done by: William Cerros
 void after_object() {
 
@@ -192,14 +215,22 @@ void after_object() {
     switch (next_token()) {
         case WORD1: case PRONOUN:
             noun();
+            getEword();
             match(DESTINATION);
+            gen("TO");
             verb();
+            getEword();
+            gen("ACTION");
             tense();
+            gen("TENSE");
             match(PERIOD);
             break;
         case WORD2:
             verb();
+            getEword();
+            gen("ACTION");
             tense();
+            gen("TENSE");
             match(PERIOD);
             break;
         default:
@@ -207,7 +238,9 @@ void after_object() {
     }
 }
 
-// Grammar: <afterNoun> ::= <be> PERIOD | DESTINATION <verb> <tense> PERIOD | OBJECT <afterObject>
+// Grammar: <afterNoun> ::= <be> #gen("DESCRIPTION")# #gen("TENSE") PERIOD | DESTINATION #gen("TO") 
+//                          <verb> #getEword# #gen("ACTION")# <tense> #gen("TENSE")# PERIOD | OBJECT
+//                          #gen("OBJECT")# <afterObject>
 // Done by: William Cerros
 void after_noun() {
 
@@ -216,16 +249,23 @@ void after_noun() {
     switch (next_token()) {
         case IS: case WAS:
             be();
+            gen("DESCRIPTION");
+            gen("TENSE");
             match(PERIOD);
             break;
         case DESTINATION:
             match(DESTINATION);
+            gen("TO");
             verb();
+            getEword();
+            gen("ACTION");
             tense();
+            gen("TENSE");
             match(PERIOD);
             break;
         case OBJECT:
             match(OBJECT);
+            gen("OBJECT");
             after_object();
             break;
         default:
@@ -233,7 +273,8 @@ void after_noun() {
     }
 }
 
-// Grammar: <afterSubject> ::= <verb> <tense> PERIOD | <noun> <afterNoun> 
+// Grammar: <afterSubject> ::= <verb> #getEword# #gen("ACTION")# <tense> #gen("TENSE")# 
+//                             PERIOD | <noun> #getEword# <afterNoun> 
 // Done by: Howard Tep
 void after_subject() {
 
@@ -242,11 +283,15 @@ void after_subject() {
     switch (next_token()) {
         case WORD2:
             verb();
+            getEword();
+            gen("ACTION");
             tense();
+            gen("TENSE");
             match(PERIOD);
             break;
         case WORD1: case PRONOUN:
             noun();
+            getEword();
             after_noun();
             break;
         default:
@@ -255,7 +300,8 @@ void after_subject() {
 
 }
 
-// Grammar: <s> ::= [CONNECTOR] <noun> SUBJECT <afterSubject>
+// Grammar: <s> ::= [CONNECTOR] #getEword# #gen("CONNECTOR")# <noun> #getEword# 
+//                   SUBJECT #gen("ACTOR")# <afterSubject>
 // Done by: Peter Sharp
 void s() {
 
@@ -264,13 +310,19 @@ void s() {
     switch (next_token()) {
         case CONNECTOR:
             match(CONNECTOR);
+            getEword();
+            gen("CONNECTOR");
             noun();
+            getEword();
             match(SUBJECT);
+            gen("ACTOR");
             after_subject();
             break;
         default:
             noun();
+            getEword();
             match(SUBJECT);
+            gen("ACTOR");
             after_subject();
             break;
     }

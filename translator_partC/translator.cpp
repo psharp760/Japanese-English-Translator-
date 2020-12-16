@@ -65,7 +65,7 @@ void build_dictionary() {
         }
     }
 
-
+    // printing out map to verify
     for (map<string, string>::const_iterator it = lexicon_dictionary.begin();
         it != lexicon_dictionary.end(); ++it)
     {

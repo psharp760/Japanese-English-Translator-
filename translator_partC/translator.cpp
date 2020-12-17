@@ -1,5 +1,6 @@
 #include<iostream>
 #include<fstream>
+#include<cstdlib>
 #include<string>
 #include <iterator> 
 #include <map>
@@ -40,8 +41,8 @@ bool token_available = false;
 string user_choice;
 ofstream errorfile;
 ofstream translatedfile;
-string JapaneseWord[47];
-string EnglishWord[47];
+string JapaneseWord[100];
+string EnglishWord[100];
 
 enum parser_function {STORY, S, AFTER_SUBJECT, AFTER_NOUN, AFTER_OBJECT, VERB1, TENSE, NOUN, BE};
 string parserName[30] = {"story", "s", "after_subject", "after_noun", "after_object", "verb1", "tense", "noun", "be"};
@@ -344,7 +345,6 @@ void story() {
     }
 }
 
-
 // ----- Additions to the parser.cpp ---------------------
 
 // ** Declare Lexicon (i.e. dictionary) that will hold the content of lexicon.txt
@@ -353,81 +353,129 @@ void story() {
 //  Done by: William Cerros
 
 // Map will serve as our look up table
-map<string, string> lexicon_dictionary;
+// map<string, string> lexicon_dictionary;
 
-void build_dictionary() {
-    // input streamt to read from text file
-    std::ifstream input_stream("lexicon.txt", std::ifstream::in);
-    string word;
+// void build_dictionary() {
+//     // input streamt to read from text file
+//     std::ifstream input_stream("lexicon.txt", std::ifstream::in);
+//     string word;
     
-    int i;
-    int j = 0;
-    // for loop will iterate through each line in lexicon.txt
-    for (string line; getline(input_stream, line); )
-    {
+//     int i;
+//     int j = 0;
+//     // for loop will iterate through each line in lexicon.txt
+//     for (string line; getline(input_stream, line); )
+//     {
          
-        // istringstream object will help us parse the input
-        istringstream ss(line);
+//         // istringstream object will help us parse the input
+//         istringstream ss(line);
 
-        // This will be our dictionary pair
-        string key;
-        string value;
+//         // This will be our dictionary pair
+//         string key;
+//         string value;
 
-        // Counter to let us know if we are reading the fist or second word
-        i = 0;
+//         // Counter to let us know if we are reading the fist or second word
+//         i = 0;
 
-        // while a word exists in the line we are currently reading from text file
-        while (ss >> word)
-        {
-            if (i == 0) {
-                key = word;
-            }
+//         // while a word exists in the line we are currently reading from text file
+//         while (ss >> word)
+//         {
+//             if (i == 0) {
+//                 key = word;
+//             }
 
-            if (i == 1) {
-                value = word;
+//             if (i == 1) {
+//                 value = word;
 
-                // Once we have read in the value we can insert to our map
-                lexicon_dictionary.insert(pair<string, string>(key, value));
-            }
+//                 // Once we have read in the value we can insert to our map
+//                 lexicon_dictionary.insert(pair<string, string>(key, value));
+//             }
 
-            i++;
-        }
-    }
+//             i++;
+//         }
+//     }
 
-    // printing out map to verify
-    for (map<string, string>::const_iterator it = lexicon_dictionary.begin();
-        it != lexicon_dictionary.end(); ++it)
-    {
-        std::cout << "Key: "<< it->first << " Value: " << it->second << " ""\n";
-    }
+//     // printing out map to verify
+//     for (map<string, string>::const_iterator it = lexicon_dictionary.begin();
+//         it != lexicon_dictionary.end(); ++it)
+//     {
+//             std::cout << "Key: "<< it->first << " Value: " << it->second << " ""\n";
+//     }
 
-}
-
-
-
+// }
 
 // ---------------- Driver ---------------------------
 
-// The final test driver to start the translator
-// Done by:  **
-int main()
-{
-  //** opens the lexicon.txt file and reads it into Lexicon
-  //** closes lexicon.txt 
-  build_dictionary();
+int main() {   
 
-  //** opens the output file translated.txt
+    ifstream dictionary;
+    dictionary.open("lexicon.txt");
 
-  cout << "Enter the input file name: ";
-  //cin >> filename;
-  //fin.open(filename.c_str());
+    for (int i = 0; i < 100; i++) {
+        dictionary >> JapaneseWord[i];
+        dictionary >> EnglishWord[i];
+    }
 
-  //** calls the <story> to start parsing
-
-  //** closes the input file 
-  //** closes traslated.txt
+    translatedfile.open("translated.txt");
+    
+    string filename;
+    cout << "Enter the input file name: ";
+    cin >> filename;
+    fin.open(filename.c_str());
+   
+    cout << "Do you want to trace error messages? (y or n)";
+    cin >> user_choice;
+    if (user_choice == "y") {
+        errorfile.open("errors.txt", ios::app);
+    }
  
+    story();
+    errorfile.close();
+    fin.close();
+    dictionary.close();
+    translatedfile.close();
 }// end
+
+// int main()
+// {
+//   build_dictionary();
+//   //** opens the lexicon.txt file and reads it into Lexicon
+//   ifstream fin;
+//   string jap;
+//   string eng;
+//   int i = 0;
+//   fin.open("lexicon.txt");
+//   while(fin) {
+//       fin >> jap;
+//       fin >> eng;
+//       JapaneseWord[i] = jap;
+//       EnglishWord[i] = eng;
+//       i++;
+//   }
+//   //** closes lexicon.txt 
+//   fin.close();
+
+//   //build_dictionary();
+
+//   //** opens the output file translated.txt
+//   translatedfile.open("translated.txt");
+
+//   string filename;
+//   cout << "Enter the input file name: ";
+//   cin >> filename;
+//   fin.open(filename.c_str());
+
+//   //** calls the <story> to start parsing
+//   story();
+//   //** closes the input file 
+//   fin.close();
+//   //** closes traslated.txt
+//   translatedfile.close();
+
+ 
+// }// end
+ //** require no other input files!
+ //** syntax error EC requires producing errors.text of messages
+
 //** require no other input files!
 //** syntax error EC requires producing errors.txt of error messages
 //** tracing On/Off EC requires sending a flag to trace message output functions
